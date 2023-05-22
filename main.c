@@ -13,6 +13,7 @@
  *************************************************************************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 
 #define NUM_DENOMINATIONS 5 // denominations are bills and coins collectively
 
@@ -25,6 +26,14 @@ void getUserInput(int denominations[], int remainingDenominations[]) {
         }
         scanf("%d", &remainingDenominations[i]);
     }
+}
+
+// check if there is no more money in the machine
+int checkRemainingDenominations(int remainingDenominations[]) {
+    for (int i = 0; i < NUM_DENOMINATIONS; i++) {
+        if (remainingDenominations[i] != 0) return 1;
+    }
+    return 0;
 }
 
 void dispenseAmount(int denominations[], int remainingDenominations[], int amount) {
@@ -70,10 +79,16 @@ void dispenseAmount(int denominations[], int remainingDenominations[], int amoun
 int main() {
     int denominations[NUM_DENOMINATIONS] = {100, 50, 20, 5, 1};
     int remainingDenominations[NUM_DENOMINATIONS] = {0};
+    int zeroes[NUM_DENOMINATIONS];
 
     getUserInput(denominations, remainingDenominations); // get user input
 
     while (1) { // main loop
+        if (!checkRemainingDenominations(remainingDenominations)) {
+            printf("No more money left in the machine\n");
+            break;
+        }
+        
         printf("Dispensing amount: ");
         int amount;
         scanf("%d", &amount);
