@@ -14,86 +14,78 @@
 
 #include <stdio.h>
 
-int main()
-{
-    // variables
-    int bills[5] = {100, 50, 20, 5, 1};
-    int remainingBills[5] = {0}, dispensedBills[5] = {0};
-    int numBills = sizeof(bills) / sizeof(bills[0]);
-    int amount, dispensedAmount;
+#define NUM_DENOMINATIONS 5 // denominations are bills and coins collectively
 
-    // get user input
-    for (int i = 0; i < numBills; i++)
-    {
-        printf("Enter the number of PHP%d bills: ", bills[i]);
-        scanf("%d", &remainingBills[i]);
+void getUserInput(int denominations[], int remainingDenominations[]) { 
+    for (int i = 0; i < NUM_DENOMINATIONS; i++) {
+        if (i < 3) {
+            printf("Enter the number of PHP%d bills: ", denominations[i]);
+        } else {
+            printf("Enter the number of PHP%d coins: ", denominations[i]);
+        }
+        scanf("%d", &remainingDenominations[i]);
+    }
+}
+
+void dispenseAmount(int denominations[], int remainingDenominations[], int amount) {
+    // reset dispensed amount every loop
+    int dispensedDenominations[NUM_DENOMINATIONS] = {0};
+    int dispensedAmount = 0;
+
+    // calculate minimum possible dispensed bills
+    for (int i = 0; i < NUM_DENOMINATIONS; i++) {
+        while (remainingDenominations[i] > 0 && amount >= denominations[i]) {
+            dispensedAmount += denominations[i];
+            amount -= denominations[i];
+            remainingDenominations[i]--;
+            dispensedDenominations[i]++;
+        }
     }
 
-    // main loop
-    while (1)
-    {
-        // Get input from the user
-        printf("Dispensing amount: ");
-        scanf("%d", &amount);
-
-        // if the user inputs 0, stop the program
-        if (amount == 0)
-        {
-            break;
+    // if money in the machine is not enough to dispense amount
+    if (amount > 0) {
+        printf("Not enough money in the machine\n");
+        for (int i = 0; i < NUM_DENOMINATIONS; i++) {
+            remainingDenominations[i] += dispensedDenominations[i];  // reset remaining bills to value before calculation
         }
+    // if dispensing the amount is possible with the bills and coins available
+    } else {
+        printf("Amount: ");  // print the dispensed amount
+        for (int i = 0; i < NUM_DENOMINATIONS; i++) {
+            if (dispensedDenominations[i] > 0) {
+                printf("%d P%d", dispensedDenominations[i], denominations[i]);
 
-        // reset dispensed amount every loop
-        dispensedAmount = 0;
-        for (int i = 0; i < numBills; i++)
-        {
-            dispensedBills[i] = 0;
-        }
-
-        // calculate minimum possible dispensed bills
-        for (int i = 0; i < numBills; i++)
-        {
-            while (remainingBills[i] > 0 && amount >= bills[i])
-            {
-                dispensedAmount += bills[i];
-                amount -= bills[i];
-                remainingBills[i]--;
-                dispensedBills[i]++;
-            }
-        }
-
-        // if money in the machine is not enough to dispense amount
-        if (amount > 0)
-        {
-            printf("Not enough money in the machine\n");
-            dispensedAmount = 0;
-            for (int i = 0; i < numBills; i++)
-            {
-                remainingBills[i] += dispensedBills[i]; // reset remaining bills to value before calculation
-            }
-            // if dispensing the amount is possible with the bills and coins available
-        }
-        else
-        {
-            // print the dispensed amount
-            printf("Amount: ");
-            for (int i = 0; i < numBills; i++)
-            {
-                if (dispensedBills[i] > 0)
-                {
-                    printf("%d P%d", dispensedBills[i], bills[i]);
-                    for (int j = i + 1; j < numBills; j++)
-                    {
-                        if (dispensedBills[j] > 0)
-                        {
-                            printf(", ");
-                            break;
-                        }
+                for (int j = i + 1; j < NUM_DENOMINATIONS; j++) {
+                    if (dispensedDenominations[j] > 0) {
+                        printf(", ");
+                        break;
                     }
                 }
             }
-            printf("\n");
         }
+        printf("\n");
     }
+}
+
+int main() {
+    int denominations[NUM_DENOMINATIONS] = {100, 50, 20, 5, 1};
+    int remainingDenominations[NUM_DENOMINATIONS] = {0};
+
+    getUserInput(denominations, remainingDenominations); // get user input
+
+    while (1) { // main loop
+        printf("Dispensing amount: ");
+        int amount;
+        scanf("%d", &amount);
+        
+        // if the user inputs 0, stop the program
+        if (amount == 0) {
+            break;
+        }
+
+        dispenseAmount(denominations, remainingDenominations, amount);
+    }
+
     printf("End\n");
     return 0;
 }
