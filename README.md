@@ -35,20 +35,20 @@ The program will stop running only under the following conditions:
 
 ## Example Run
 ```
-Enter the number of PHP100 bills: 1
-Enter the number of PHP50 bills: 2
-Enter the number of PHP20 bills: 5
-Enter the number of PHP5 coins: 10
-Enter the number of PHP1 coins: 10
-Dispensing amount: 125
-Amount: 1 P100, 1 P20, 1 P5
-Dispensing amount: 500
+Enter the number of PHP 100 bills: 1
+Enter the number of PHP 50 bills: 2
+Enter the number of PHP 20 bills: 5
+Enter the number of PHP 5 coins: 10
+Enter the number of PHP 1 coins: 10
+Enter the amount of money (in PHP) that you want to dispense: PHP 125
+Bills and/or coins dispensed: 1 PHP 100, 1 PHP 20, 1 PHP 5
+Enter the amount of money (in PHP) that you want to dispense: PHP 500
 Not enough money in the machine
-Dispensing amount: 125
-Amount: 2 P50, 1 P20, 1 P5
-Dispensing amount: 10
-Amount: 2 P5
-Dispensing amount: 0
+Enter the amount of money (in PHP) that you want to dispense: PHP 125
+Bills and/or coins dispensed: 2 PHP 50, 1 PHP 20, 1 PHP 5
+Enter the amount of money (in PHP) that you want to dispense: PHP 10
+Bills and/or coins dispensed: 2 PHP 5
+Enter the amount of money (in PHP) that you want to dispense: PHP 0
 End
 ```
 
