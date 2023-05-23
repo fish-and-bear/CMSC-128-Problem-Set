@@ -17,14 +17,25 @@
 
 #define NUM_DENOMINATIONS 5 // denominations are bills and coins collectively
 
-void getUserInput(int denominations[], int remainingDenominations[]) { 
+void clearInputBuffer() {   // clear input buffer upon invalid input
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+void getUserInput(int denominations[], int remainingDenominations[]) {
     for (int i = 0; i < NUM_DENOMINATIONS; i++) {
-        if (i < 3) {
-            printf("Enter the number of PHP%d bills: ", denominations[i]);
-        } else {
-            printf("Enter the number of PHP%d coins: ", denominations[i]);
+        printf("Enter the number of PHP %d %s: ", denominations[i], (i < 3) ? "bills" : "coins");
+
+        while (1) {
+            if (scanf("%d", &remainingDenominations[i]) == 1) {
+                clearInputBuffer();
+                break;
+            } else {
+                printf("Invalid input. Please enter a valid integer.\n");
+                printf("Enter the number of PHP %d %s: ", denominations[i], (i < 3) ? "bills" : "coins");
+                clearInputBuffer();
+            }
         }
-        scanf("%d", &remainingDenominations[i]);
     }
 }
 
@@ -59,10 +70,10 @@ void dispenseAmount(int denominations[], int remainingDenominations[], int amoun
         }
     // if dispensing the amount is possible with the bills and coins available
     } else {
-        printf("Amount: ");  // print the dispensed amount
+        printf("Bills and/or coins dispensed: ");  // print the dispensed amount
         for (int i = 0; i < NUM_DENOMINATIONS; i++) {
             if (dispensedDenominations[i] > 0) {
-                printf("%d P%d", dispensedDenominations[i], denominations[i]);
+                printf("%d PHP %d", dispensedDenominations[i], denominations[i]);
 
                 for (int j = i + 1; j < NUM_DENOMINATIONS; j++) {
                     if (dispensedDenominations[j] > 0) {
@@ -79,21 +90,28 @@ void dispenseAmount(int denominations[], int remainingDenominations[], int amoun
 int main() {
     int denominations[NUM_DENOMINATIONS] = {100, 50, 20, 5, 1};
     int remainingDenominations[NUM_DENOMINATIONS] = {0};
-    int zeroes[NUM_DENOMINATIONS];
 
-    getUserInput(denominations, remainingDenominations); // get user input
+    getUserInput(denominations, remainingDenominations);
 
-    while (1) { // main loop
+    while (1) {
         if (!checkRemainingDenominations(remainingDenominations)) {
-            printf("No more money left in the machine\n");
+            printf("No more money left in the machine.\n");
             break;
         }
-        
-        printf("Dispensing amount: ");
+
+        printf("Enter the amount of money (in PHP) that you want to dispense: PHP ");
         int amount;
-        scanf("%d", &amount);
-        
-        // if the user inputs 0, stop the program
+
+        while (1) {
+            if (scanf("%d", &amount) == 1) {
+                clearInputBuffer();
+                break;
+            } else {
+                printf("Invalid input. Please enter a valid integer.\nEnter the amount of money (in PHP) that you want to dispense: PHP ");
+                clearInputBuffer();
+            }
+        }
+
         if (amount == 0) {
             break;
         }
