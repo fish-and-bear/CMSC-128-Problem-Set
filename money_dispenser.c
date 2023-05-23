@@ -28,9 +28,15 @@ void getUserInput(int denominations[], int remainingDenominations[]) {
 
         while (1) {
             if (scanf("%d", &remainingDenominations[i]) == 1) {
-                clearInputBuffer();
-                break;
-            } else {
+                if (remainingDenominations[i] >= 0) {
+                    clearInputBuffer();
+                    break;
+                } else {    // if input is a negative integer
+                    printf("Invalid input. Please enter a non-negative integer.\n");
+                    printf("Enter the number of PHP %d %s: ", denominations[i], (i < 3) ? "bills" : "coins");
+                    clearInputBuffer();
+                }
+            } else {    // if input is a non-integer
                 printf("Invalid input. Please enter a valid integer.\n");
                 printf("Enter the number of PHP %d %s: ", denominations[i], (i < 3) ? "bills" : "coins");
                 clearInputBuffer();
@@ -103,11 +109,12 @@ int main() {
         int amount;
 
         while (1) {
-            if (scanf("%d", &amount) == 1) {
+            if (scanf("%d", &amount) == 1 && amount >= 0) {
                 clearInputBuffer();
                 break;
             } else {
-                printf("Invalid input. Please enter a valid integer.\nEnter the amount of money (in PHP) that you want to dispense: PHP ");
+                printf("Invalid input. Please enter a valid non-negative integer.\n");
+                printf("Enter the amount of money (in PHP) that you want to dispense: PHP ");
                 clearInputBuffer();
             }
         }
@@ -119,6 +126,6 @@ int main() {
         dispenseAmount(denominations, remainingDenominations, amount);
     }
 
-    printf("End\n");
+    printf("Program terminated.\n");
     return 0;
 }
