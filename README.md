@@ -49,7 +49,7 @@ Bills and/or coins dispensed: 2 PHP 50, 1 PHP 20, 1 PHP 5
 Enter the amount of money (in PHP) that you want to dispense: PHP 10
 Bills and/or coins dispensed: 2 PHP 5
 Enter the amount of money (in PHP) that you want to dispense: PHP 0
-End
+Program terminated
 ```
 
 ## Author
